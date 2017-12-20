@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>What's The Weather</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Guess The Weather In...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Oswald|Rokkitt" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/reset.css">
+	<link rel="stylesheet" href="assets/css/weather.css">
+</head>
+<body>
+	<div class="page">
+		<div class="game-container">
+			<div class="game-wel">
+				<div>
+					<h1>What's The Weather In...</h1>
+					<p>In case you need to know what Carmen Sandiego needs to pack in her suitcase or if Where's Waldo is wears-waldo-ing a coat or tank top. <br>Guess if the weather is warmer, exactly or cooler than what is shown.</p>
+				</div>
+				<div>
+					<button class="play-new" data-type="usa">Play in the USA</button>
+					<button class="play-new" data-type="world">Guess Globally</button>
+				</div>
+			</div><!--game wel-->
+			<div class="game-ques" style="display: none">
+				<div>
+					<p>Is the weather in</p>
+					<h4 class="weatherIn fancy">Atlanta, GA</h4>
+					<p>wamer, exactly or cooler than</p>
+					<h4><span class="weatherGuess fancy">32.4</span>&deg;F</h4>
+				</div>
+				<div id="user-q">
+					<button class="warmer play-guess" data-guess="warmer">Warmer</button>
+					<button class="exactly play-guess" data-guess="exactly">Exactly</button>
+					<button class="cooler play-guess" data-guess="cooler">Cooler</button>
+				</div>
+				<div id="user-a">
+					<p>You are <span id="userWas">too slow</span>!</p>
+					<p class="fancy" id="sidenote">Is is 55 in Atlanta.</p>
+				</div>
+				<div id="user-p">
+					<p>Time: <span id="time-left">30</span></p>
+					<p>Question <span id="pos">2 of 5</span></p>
+				</div>
+			</div><!--game ques-->
+			<div class="game-over" style="display: none">
+				<div>
+					<h1>Game Over</h1>
+					<p>What is your temperature?</p>
+					<p>Correct guesses: <span id="userCorrect"></span></p>
+					<p>Incorrect guesses: <span id="userIncorrect"></span></p>
+					<p>Click below to keep playing</p>
+				</div>
+				<div>
+					<button class="play-new" data-type="usa">USA Cities Let's Play</button>
+					<button class="play-new" data-type="world">Global Places Let's Play</button>
+					<div class="change-time">
+					<label for="newtime">Need more time? Enter a new duration before continuing</label>
+					<input type="number" name="newtime" id="newtime" placeholder="30"><span>seconds</span>
+					</div>
+				</div>
+			</div><!--game over-->
+		</div><!--game container-->
+	</div>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/javascript/app.js"></script>
+</body>
+</html>
