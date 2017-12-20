@@ -112,7 +112,7 @@ $(document).ready(function(){
 	// this will modify the global object
 
 	function getWeather( whereWeather ){
-		var baseurl = 'http://api.wunderground.com/api';
+		var baseurl = 'https://api.wunderground.com/api';
 		var krKey = '7ad17aca98534b07';
 		var finalurl = baseurl + '/' + krKey + '/geolookup/conditions' + whereWeather.qSend ;
 		console.log(finalurl);
