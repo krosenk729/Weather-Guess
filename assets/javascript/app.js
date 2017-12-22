@@ -81,7 +81,6 @@ $(document).ready(function(){
 		//start timer & show question
 		$('#pos').text(userPos.pos + ' in ' + gameLen);
 		swapBG();
-		swapPanel('#user-a, #user-p, .game-wel','#user-q, #user-p');
 		currentT.start();
 	}
 
@@ -122,6 +121,9 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: finalurl,
+			complete: function(){	
+				swapPanel('#user-a, #user-p, .game-wel','#user-q, #user-p');
+			},
 			success: function( jP ){
 				whereWeather.curr  = Math.round(jP.current_observation.temp_f);
 				whereWeather.currIcon  = iconurl + jP.current_observation.icon + '.gif';
@@ -131,7 +133,9 @@ $(document).ready(function(){
 				$('.weatherIn').text( whereWeather.city + ', ' + whereWeather.fullsc );
 				$('.weatherGuess').text( currentAns.showTemp );
 			},
-			error: function(){console.log('error');}
+			error: function( jqXHR, textStatus, errorThrown ){
+				console.log('error '+ errorThrown + ' : ' + textStatus);
+			}
 		});
 
 	}
