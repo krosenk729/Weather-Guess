@@ -76,12 +76,36 @@ $(document).ready(function(){
 	// determines if should show hotter/colder/exact temp
 	// starts timing user
 	function nextQuestion(){
-		getWeather( currentQ );
+		var baseurl = 'https://api.wunderground.com/api';
+		var krKey = '7ad17aca98534b07';
+		var finalurl = baseurl + '/' + krKey + '/geolookup/conditions' + currentQ.qSend ;
+		console.log(finalurl);
+		// using icon sets from https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets&MR=1
+		// to change icon sets, change the url's last directory /i/ to /f/, /k/, ... etc	
+		var iconurl = 'https://icons.wxug.com/i/c/i/';
 
-		//start timer & show question
-		$('#pos').text(userPos.pos + ' in ' + gameLen);
-		swapBG();
-		currentT.start();
+		$.ajax({
+			url: finalurl,
+			complete: function(){	
+				swapPanel('#user-a, #user-p, .game-wel','#user-q, #user-p');
+				$('#pos').text(userPos.pos + ' in ' + gameLen);
+				swapBG();
+				currentT.start();
+			},
+			success: function( jP ){
+				currentQ.curr  = Math.round(jP.current_observation.temp_f);
+				currentQ.currIcon  = iconurl + jP.current_observation.icon + '.gif';
+				currentQ.updated = new Date(); 
+
+				currentAns = changeTemp(currentQ.curr); 
+				$('.weatherIn').text( currentQ.city + ', ' + currentQ.fullsc );
+				$('.weatherGuess').text( currentAns.showTemp );
+			},
+			error: function( jqXHR, textStatus, errorThrown ){
+				console.log('error '+ errorThrown + ' : ' + textStatus);
+			}
+		});
+
 	}
 
 	/* decide on question display */
@@ -102,42 +126,6 @@ $(document).ready(function(){
 			s.showTemp = actualTemp;
 		}
 		return s;
-	}
-
-
-	/* update object with current weather */
-	// queries wunderground api for curren weather 
-	// for documentation, go to https://www.wunderground.com/weather/api/d/docs
-	// this will modify the global object
-
-	function getWeather( whereWeather ){
-		var baseurl = 'https://api.wunderground.com/api';
-		var krKey = '7ad17aca98534b07';
-		var finalurl = baseurl + '/' + krKey + '/geolookup/conditions' + whereWeather.qSend ;
-		console.log(finalurl);
-		// using icon sets from https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets&MR=1
-		// to change icon sets, change the url's last directory /i/ to /f/, /k/, ... etc	
-		var iconurl = 'https://icons.wxug.com/i/c/i/';
-
-		$.ajax({
-			url: finalurl,
-			complete: function(){	
-				swapPanel('#user-a, #user-p, .game-wel','#user-q, #user-p');
-			},
-			success: function( jP ){
-				whereWeather.curr  = Math.round(jP.current_observation.temp_f);
-				whereWeather.currIcon  = iconurl + jP.current_observation.icon + '.gif';
-				whereWeather.updated = new Date(); 
-
-				currentAns = changeTemp(whereWeather.curr); 
-				$('.weatherIn').text( whereWeather.city + ', ' + whereWeather.fullsc );
-				$('.weatherGuess').text( currentAns.showTemp );
-			},
-			error: function( jqXHR, textStatus, errorThrown ){
-				console.log('error '+ errorThrown + ' : ' + textStatus);
-			}
-		});
-
 	}
 
 	/* timer object */
@@ -595,17 +583,18 @@ var gameLocs = {
 /*********************************/
 // if I had more time, I would do these things...
 
-/* change to question & answer panel */
-// creates html for Q/A section
-// clears old html (either welcome / game over)
-// shows newly created Q/A section 
+// write two function to cleanup html and get rid of swappanel function
+	/* change to question & answer panel */
+	// creates html for Q/A section
+	// clears old html (either welcome / game over)
+	// shows newly created Q/A section 
 
 
-/* change to game over panel */
-// creates html for game over section
-// clears old html (Q/A)
-// shows newly created game over section 
+	/* change to game over panel */
+	// creates html for game over section
+	// clears old html (Q/A)
+	// shows newly created game over section 
 
+// write a check to make sure we ...
 /* end game if out of cities */
 
-/* update where the city display is done to avoid lag bc of api call */
