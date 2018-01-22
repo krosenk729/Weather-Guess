@@ -1,5 +1,5 @@
 var gameLen = 4; // number of questions in a game 
-var questMaxTime = 90;  // num seconds user has to answer question
+var questMaxTime = 30;  // num seconds user has to answer question
 var backgroundNo = 1;
 
 $(document).ready(function(){
@@ -35,8 +35,8 @@ $(document).ready(function(){
 		userPos.right = 0;
 		currentQ = gameLocs[currentSet].pop();
 		console.log(currentQ);
-		swapPanel('.game-wel, .game-over, #user-a', '.game-ques, #user-p, #user-q');
 		nextQuestion();
+		setTimeout(()=> swapPanel('.game-wel, .game-over, #user-a', '.game-ques, #user-p, #user-q'), 500);
 	}
 
 	/* check and show answer */ 
@@ -68,7 +68,7 @@ $(document).ready(function(){
 				nextQuestion();
 			}
 		}
-		setTimeout(checkEnd, 2500);
+		setTimeout(checkEnd, 1500);
 	}
 
 	/* get and show a question to user */
@@ -93,18 +93,26 @@ $(document).ready(function(){
 				currentT.start();
 			},
 			success: function( jP ){
-				currentQ.curr  = Math.round(jP.current_observation.temp_f);
+				// currentQ.curr  = Math.round(jP.current_observation.temp_f);
+				// currentQ.currIcon  = iconurl + jP.current_observation.icon + '.gif';
+				// currentQ.updated = new Date(); 
+
+				// currentAns = changeTemp(currentQ.curr); 
+				// $('.weatherIn').text( currentQ.city + ', ' + currentQ.fullsc );
+				// $('.weatherGuess').text( currentAns.showTemp );
+			},
+			error: function( jqXHR, textStatus, errorThrown ){
+				console.log('error '+ errorThrown + ' : ' + textStatus);
+			}
+		}).then( function(jP){
+			currentQ.curr  = Math.round(jP.current_observation.temp_f);
 				currentQ.currIcon  = iconurl + jP.current_observation.icon + '.gif';
 				currentQ.updated = new Date(); 
 
 				currentAns = changeTemp(currentQ.curr); 
 				$('.weatherIn').text( currentQ.city + ', ' + currentQ.fullsc );
 				$('.weatherGuess').text( currentAns.showTemp );
-			},
-			error: function( jqXHR, textStatus, errorThrown ){
-				console.log('error '+ errorThrown + ' : ' + textStatus);
-			}
-		});
+		} );
 
 	}
 
